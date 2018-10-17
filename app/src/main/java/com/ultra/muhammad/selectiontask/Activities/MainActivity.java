@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d(TAG, "Saving the country name to the preference file");
                 SharedPreferences sharedPref = getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
                 Editor editor = sharedPref.edit();
-                String countryCode = codePicker.getSelectedCountryCode();
-                editor.putString(PREF_COUNTRY_CODE, countryCode);
+                int countryCode = codePicker.getSelectedCountryCodeAsInt();
+                editor.putInt(PREF_COUNTRY_CODE, countryCode);
                 editor.apply();
             }
         });
@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(TAG, "onResume() has been instantiated!");
         Log.d(TAG, "restoring the saved country name from the preference file");
         SharedPreferences sharedPref = getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        String countryCode = sharedPref.getString(PREF_COUNTRY_CODE, "");
-        codePicker.setCountryForPhoneCode(Integer.valueOf(countryCode));
+        int countryCode = sharedPref.getInt(PREF_COUNTRY_CODE, codePicker.getDefaultCountryCodeAsInt());
+        codePicker.setCountryForPhoneCode(countryCode);
 
     }
 

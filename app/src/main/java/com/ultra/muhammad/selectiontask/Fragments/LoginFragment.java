@@ -1,6 +1,7 @@
 package com.ultra.muhammad.selectiontask.Fragments;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -151,8 +153,20 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
     private void loginUser() {
         Log.d(TAG, "login button has been clicked");
+        hideKeyboard(getActivity());
         if (checkValidation()) {
             final AlertDialog waitingDialog = new SpotsDialog(getActivity(), R.style.Custom);
             waitingDialog.setCancelable(false);
@@ -173,15 +187,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 }
             });
         }
-    }
-
-    private void goToSignOutFragment() {
-        Log.d(TAG, "sign up button has been clicked");
-        mFragmentManager.beginTransaction()
-                .addToBackStack(TAG)
-                .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
-                .replace(R.id.frameContainer, new SignUpFragment(), SignUpFragment.TAG)
-                .commit();
     }
 
     /**
@@ -211,6 +216,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }
 
         return true;
+    }
+
+    private void goToSignOutFragment() {
+        Log.d(TAG, "sign up button has been clicked");
+        hideKeyboard(getActivity());
+        mFragmentManager.beginTransaction()
+                .addToBackStack(TAG)
+                .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
+                .replace(R.id.frameContainer, new SignUpFragment(), SignUpFragment.TAG)
+                .commit();
     }
 
 }

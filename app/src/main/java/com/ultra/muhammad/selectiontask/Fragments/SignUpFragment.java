@@ -1,5 +1,6 @@
 package com.ultra.muhammad.selectiontask.Fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -125,8 +127,20 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
     private void goToLoginFragment() {
         Log.d(TAG, "login button has been clicked");
+        hideKeyboard(getActivity());
         mFragmentManager.popBackStack();
         mFragmentManager
                 .beginTransaction()
@@ -134,40 +148,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                 .setCustomAnimations(R.anim.left_enter, R.anim.right_out)
                 .replace(R.id.frameContainer, new LoginFragment(), LoginFragment.TAG)
                 .commit();
-    }
-
-    private void SignUpUser() {
-        Log.d(TAG, "sign up button has been clicked");
-        if (checkValidation()) {
-            final AlertDialog waitingDialog = new SpotsDialog(getActivity(), R.style.Custom);
-            waitingDialog.setCancelable(false);
-            waitingDialog.setTitle("Loading...");
-            waitingDialog.show();
-
-            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        User user = new User(email, password);
-                        FirebaseDatabase.getInstance().getReference("Users")
-                                .child(mAuth.getCurrentUser().getUid())
-                                .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                waitingDialog.dismiss();
-                                mFragmentManager
-                                        .beginTransaction()
-                                        .addToBackStack(TAG)
-                                        .setCustomAnimations(R.anim.left_enter, R.anim.right_out)
-                                        .replace(R.id.frameContainer, new LoginFragment(), LoginFragment.TAG)
-                                        .commit();
-                                Toast.makeText(getContext(), "Registered successfully!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                }
-            });
-        }
     }
 
     /**
@@ -211,5 +191,40 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
             return false;
         }
         return true;
+    }
+
+    private void SignUpUser() {
+        Log.d(TAG, "sign up button has been clicked");
+        hideKeyboard(getActivity());
+        if (checkValidation()) {
+            final AlertDialog waitingDialog = new SpotsDialog(getActivity(), R.style.Custom);
+            waitingDialog.setCancelable(false);
+            waitingDialog.setTitle("Loading...");
+            waitingDialog.show();
+
+            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        User user = new User(email, password);
+                        FirebaseDatabase.getInstance().getReference("Users")
+                                .child(mAuth.getCurrentUser().getUid())
+                                .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                waitingDialog.dismiss();
+                                mFragmentManager
+                                        .beginTransaction()
+                                        .addToBackStack(TAG)
+                                        .setCustomAnimations(R.anim.left_enter, R.anim.right_out)
+                                        .replace(R.id.frameContainer, new LoginFragment(), LoginFragment.TAG)
+                                        .commit();
+                                Toast.makeText(getContext(), "Registered successfully!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            });
+        }
     }
 }
