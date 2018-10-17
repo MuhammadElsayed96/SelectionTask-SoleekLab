@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">SelectionTask</string>
+    <string name="thumbnail_name">SoleekLab</string>
+    <string name="email">Email</string>
+    <string name="login">LOGIN</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="soleeklab">SOLEEKLAB</string>
+    <string name="create_password">Create Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="show_pwd">Show Password</string>
+    <string name="hide_pwd">Hide Password</string>
+    <string name="soleeklab_logo">SoleekLab Logo</string>
+    <string name="password">Password</string>
 </resources>

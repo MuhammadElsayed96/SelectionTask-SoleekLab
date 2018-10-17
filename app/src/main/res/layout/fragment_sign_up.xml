@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fcfcfb"
+    tools:context=".Fragments.SignUpFragment">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/soleek_logo"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:contentDescription="@string/soleeklab_logo"
+            android:src="@drawable/soleeklabl_logo"
+            app:layout_constraintBottom_toTopOf="@id/login_layout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/sign_up_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingTop="32dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/soleek_logo">
+
+
+            <!-- Email Label -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_email_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
+
+                <EditText
+                    android:id="@+id/input_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorEtBackgroundTint"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    tools:ignore="UnusedAttribute" />
+            </android.support.design.widget.TextInputLayout>
+            <!-- Password Label -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_password_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
+
+                <EditText
+                    android:id="@+id/input_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorEtBackgroundTint"
+                    android:hint="@string/create_password"
+                    android:inputType="textPassword"
+                    tools:ignore="UnusedAttribute" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- Confirm Password Label -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_confirm_password_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
+
+                <EditText
+                    android:id="@+id/input_confirm_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorEtBackgroundTint"
+                    android:hint="@string/confirm_password"
+                    android:inputType="textPassword"
+                    tools:ignore="UnusedAttribute" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_sign_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginRight="24dp"
+                android:background="@drawable/btn_background_effects"
+                android:text="@string/sign_up"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/transparent_button_red"
+            android:text="@string/login"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sign_up_layout" />
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
