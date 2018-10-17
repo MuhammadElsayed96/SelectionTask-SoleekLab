@@ -11,4 +11,5 @@
     <string name="hide_pwd">Hide Password</string>
     <string name="soleeklab_logo">SoleekLab Logo</string>
     <string name="password">Password</string>
+    <string name="sign_out">SIGN OUT</string>
 </resources>

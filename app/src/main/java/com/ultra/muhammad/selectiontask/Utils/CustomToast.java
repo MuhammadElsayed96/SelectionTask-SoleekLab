@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.ultra.muhammad.selectiontask.R;
 
-public class CustomToast {
+public final class CustomToast {
     private static final String TAG = CustomToast.class.getSimpleName();
 
     public void showToast(Context context, View view, String error) {

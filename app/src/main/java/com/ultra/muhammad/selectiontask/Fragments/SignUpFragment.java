@@ -1,6 +1,9 @@
 package com.ultra.muhammad.selectiontask.Fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
@@ -14,12 +17,21 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.ultra.muhammad.selectiontask.Model.User;
 import com.ultra.muhammad.selectiontask.R;
 import com.ultra.muhammad.selectiontask.Utils.CustomToast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import dmax.dialog.SpotsDialog;
 
 public class SignUpFragment extends Fragment implements View.OnClickListener {
 
@@ -33,6 +45,15 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     private String email, password, confirmPassword;
     private LinearLayout mSignUpLayout;
     private Animation mShakeAnimation;
+    private FirebaseAuth mAuth;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate() has been instantiated");
+        mAuth = FirebaseAuth.getInstance();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,7 +69,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        Log.wtf(TAG, "onResume() has been instantiated");
+        Log.d(TAG, "onResume() has been instantiated");
 
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
@@ -96,24 +117,56 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_sign_up:
-                Log.d(TAG, "sign up button has been clicked");
-
-
-                if (checkValidation()) {
-
-                }
+                SignUpUser();
                 break;
-
             case R.id.login_button:
-                Log.d(TAG, "login button has been clicked");
-                mFragmentManager.popBackStack();
-                mFragmentManager
-                        .beginTransaction()
-                        .addToBackStack(TAG)
-                        .setCustomAnimations(R.anim.left_enter, R.anim.right_out)
-                        .replace(R.id.frameContainer, new LoginFragment(), LoginFragment.TAG)
-                        .commit();
+                goToLoginFragment();
                 break;
+        }
+    }
+
+    private void goToLoginFragment() {
+        Log.d(TAG, "login button has been clicked");
+        mFragmentManager.popBackStack();
+        mFragmentManager
+                .beginTransaction()
+                .addToBackStack(TAG)
+                .setCustomAnimations(R.anim.left_enter, R.anim.right_out)
+                .replace(R.id.frameContainer, new LoginFragment(), LoginFragment.TAG)
+                .commit();
+    }
+
+    private void SignUpUser() {
+        Log.d(TAG, "sign up button has been clicked");
+        if (checkValidation()) {
+            final AlertDialog waitingDialog = new SpotsDialog(getActivity(), R.style.Custom);
+            waitingDialog.setCancelable(false);
+            waitingDialog.setTitle("Loading...");
+            waitingDialog.show();
+
+            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        User user = new User(email, password);
+                        FirebaseDatabase.getInstance().getReference("Users")
+                                .child(mAuth.getCurrentUser().getUid())
+                                .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                waitingDialog.dismiss();
+                                mFragmentManager
+                                        .beginTransaction()
+                                        .addToBackStack(TAG)
+                                        .setCustomAnimations(R.anim.left_enter, R.anim.right_out)
+                                        .replace(R.id.frameContainer, new LoginFragment(), LoginFragment.TAG)
+                                        .commit();
+                                Toast.makeText(getContext(), "Registered successfully!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            });
         }
     }
 

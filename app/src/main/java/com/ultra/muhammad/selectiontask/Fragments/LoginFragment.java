@@ -1,7 +1,11 @@
 package com.ultra.muhammad.selectiontask.Fragments;
 
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.InputType;
@@ -20,12 +24,21 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.ultra.muhammad.selectiontask.Activities.MainActivity;
 import com.ultra.muhammad.selectiontask.R;
 import com.ultra.muhammad.selectiontask.Utils.CustomToast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import dmax.dialog.SpotsDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,14 +56,21 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private Button mLoginButton, mSignUpButton;
     private LinearLayout mLoginLayout;
     private String email, password;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase mDb;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate() has been instantiated");
+        mAuth = FirebaseAuth.getInstance();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         Log.d(TAG, "onCreateView() has been instantiated");
-
         view = inflater.inflate(R.layout.fragment_login, container, false);
-
         initViews();
         setListeners();
         return view;
@@ -68,7 +88,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
                     // handle back button's click listener
-
                     getActivity().onBackPressed();
                     return true;
                 }
@@ -76,11 +95,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
-
-    public LoginFragment() {
-        // Required empty public constructor
-    }
-
 
     /**
      * sets up all Fragment Views
@@ -128,23 +142,46 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
-                Log.d(TAG, "login button has been clicked");
-
-
-                if (checkValidation()) {
-
-                }
+                loginUser();
                 break;
 
             case R.id.sign_up_button:
-                Log.d(TAG, "sign up button has been clicked");
-                mFragmentManager.beginTransaction()
-                        .addToBackStack(TAG)
-                        .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
-                        .replace(R.id.frameContainer, new SignUpFragment(), SignUpFragment.TAG)
-                        .commit();
+                goToSignOutFragment();
                 break;
         }
+    }
+
+    private void loginUser() {
+        Log.d(TAG, "login button has been clicked");
+        if (checkValidation()) {
+            final AlertDialog waitingDialog = new SpotsDialog(getActivity(), R.style.Custom);
+            waitingDialog.setCancelable(false);
+            waitingDialog.setTitle("Loading...");
+            waitingDialog.show();
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "Login success");
+                        waitingDialog.dismiss();
+                        startActivity(new Intent(getContext(), MainActivity.class));
+                        getActivity().finish();
+                        Toast.makeText(getContext(), "Welcome!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.e(TAG, "Login fail", task.getException());
+                    }
+                }
+            });
+        }
+    }
+
+    private void goToSignOutFragment() {
+        Log.d(TAG, "sign up button has been clicked");
+        mFragmentManager.beginTransaction()
+                .addToBackStack(TAG)
+                .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
+                .replace(R.id.frameContainer, new SignUpFragment(), SignUpFragment.TAG)
+                .commit();
     }
 
     /**

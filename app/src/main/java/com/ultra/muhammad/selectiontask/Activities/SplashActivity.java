@@ -20,6 +20,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void checkUserSession() {
+        Log.d(TAG, "checkUserSession() has been instantiated!");
 
         try {
             Thread.sleep(2000);
