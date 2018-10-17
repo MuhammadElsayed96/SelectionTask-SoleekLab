@@ -3,6 +3,8 @@ This is the selection task for SoleekLab internship program
 
 
 #### Screenshots
+<img src="https://user-images.githubusercontent.com/17935590/47062192-0c55f800-d1d5-11e8-86e5-016fd6ecb6a8.png" width="540" height="1140">
+
 ![1](https://user-images.githubusercontent.com/17935590/47062192-0c55f800-d1d5-11e8-86e5-016fd6ecb6a8.png)
 ![2](https://user-images.githubusercontent.com/17935590/47062194-0c55f800-d1d5-11e8-8f64-e28cf959f769.png)
 ![3](https://user-images.githubusercontent.com/17935590/47062456-6d320000-d1d6-11e8-85ae-b2fbbdfa35c2.png)
