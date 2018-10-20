@@ -1,7 +1,6 @@
 # SelectionTask-SoleekLab
 This is the selection task for SoleekLab internship program
 
-
 #### Screenshots
 
 # <img src="https://user-images.githubusercontent.com/17935590/47062192-0c55f800-d1d5-11e8-86e5-016fd6ecb6a8.png" width="270" height="570">
