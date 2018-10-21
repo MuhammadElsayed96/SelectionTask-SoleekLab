@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String PREF_COUNTRY_CODE = "pref_country_code";
     private static final String PREF_FILE_NAME = "soleeklab_pref";
-
     private Button mSignOutButton;
     private FirebaseAuth mAuth;
     private CountryCodePicker codePicker;
@@ -56,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
-
 
     @Override
     protected void onResume() {

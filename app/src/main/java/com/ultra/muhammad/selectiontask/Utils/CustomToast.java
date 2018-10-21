@@ -11,6 +11,11 @@ import android.widget.Toast;
 
 import com.ultra.muhammad.selectiontask.R;
 
+/**
+ * I've created this class to customize the toast messages while on the
+ * Login or Sign Up fragments.
+ */
+
 public final class CustomToast {
     private static final String TAG = CustomToast.class.getSimpleName();
 

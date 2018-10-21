@@ -1,6 +1,5 @@
 package com.ultra.muhammad.selectiontask.Fragments;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -32,7 +31,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 import com.ultra.muhammad.selectiontask.Activities.MainActivity;
 import com.ultra.muhammad.selectiontask.R;
 import com.ultra.muhammad.selectiontask.Utils.CustomToast;
@@ -42,9 +40,6 @@ import java.util.regex.Pattern;
 
 import dmax.dialog.SpotsDialog;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class LoginFragment extends Fragment implements View.OnClickListener {
 
     public static final String TAG = LoginFragment.class.getSimpleName();
@@ -59,7 +54,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private LinearLayout mLoginLayout;
     private String email, password;
     private FirebaseAuth mAuth;
-    private FirebaseDatabase mDb;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -153,7 +147,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * It enhances the user experience by hiding the input layout from
+     * the screen.
+     */
     public static void hideKeyboard(Activity activity) {
+        Log.d(TAG, "hideKeyboard() has been instantiated");
+
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.
         View view = activity.getCurrentFocus();

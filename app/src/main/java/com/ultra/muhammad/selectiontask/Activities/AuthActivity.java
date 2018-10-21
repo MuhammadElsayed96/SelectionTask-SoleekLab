@@ -13,10 +13,8 @@ import com.ultra.muhammad.selectiontask.R;
 
 public class AuthActivity extends AppCompatActivity {
 
-
     private static final String TAG = AuthActivity.class.getSimpleName();
     private static FragmentManager fragmentManager;
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +23,7 @@ public class AuthActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate() has been instantiated");
 
         fragmentManager = getSupportFragmentManager();
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
             startActivity(new Intent(this, MainActivity.class));
             Toast.makeText(this, "Welcome back!", Toast.LENGTH_SHORT).show();
@@ -38,6 +36,9 @@ public class AuthActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * To handle the navigation correctly when the back button pressed.
+     */
     @Override
     public void onBackPressed() {
         Log.wtf(TAG, "onBackPressed() has been instantiated");

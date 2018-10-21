@@ -2,11 +2,7 @@ package com.ultra.muhammad.selectiontask.Model;
 
 public final class User {
 
-    private static final String TAG = User.class.getSimpleName();
-
-    private String mUserEmail;
-    private String mUserPassword;
-    private String mUserConfirmPassword;
+    private String mUserEmail, mUserPassword, mUserConfirmPassword;
 
     // Login constructor
     public User(String mUserEmail, String mUserPassword) {
@@ -20,7 +16,6 @@ public final class User {
         this.mUserPassword = mUserPassword;
         this.mUserConfirmPassword = mUserConfirmPassword;
     }
-
 
     public String getUserEmail() {
         return mUserEmail;

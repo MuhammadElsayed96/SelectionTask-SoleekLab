@@ -44,11 +44,10 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     private EditText mEmail, mPassword, mConfirmPassword;
     private FragmentManager mFragmentManager;
     private Button mLoginButton, mSignUpButton;
-    private String email, password, confirmPassword;
+    private String email, password;
     private LinearLayout mSignUpLayout;
     private Animation mShakeAnimation;
     private FirebaseAuth mAuth;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,14 +105,12 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         mShakeAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
     }
 
-
     private void setListeners() {
         Log.d(TAG, "setListeners() has been instantiated");
         mSignUpButton.setOnClickListener(this);
         mLoginButton.setOnClickListener(this);
         mSignUpLayout.setOnClickListener(this);
     }
-
 
     @Override
     public void onClick(View v) {
@@ -127,7 +124,13 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * It enhances the user experience by hiding the input layout from
+     * the screen.
+     */
     public static void hideKeyboard(Activity activity) {
+        Log.d(TAG, "hideKeyboard() has been instantiated");
+
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.
         View view = activity.getCurrentFocus();
@@ -159,7 +162,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         Log.d(TAG, "checkValidation() has been instantiated");
         email = mEmail.getText().toString();
         password = mPassword.getText().toString();
-        confirmPassword = mConfirmPassword.getText().toString();
+        String confirmPassword = mConfirmPassword.getText().toString();
 
         // Pattern match for email id
         Pattern p = Pattern.compile(REG_EX);
